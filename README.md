@@ -1,5 +1,13 @@
 About:
-This application is a simple calculator application which exposes 2 REST endpoints.
+This application is a simple calculator which could be used to do basic operators like addition, subtraction, multiplication, division. 
+The calculator is capable of evaluating multi operand expressions like "4*5+6".
+It follows bodmas rule. 
+It supports decimal numbers.
+Invalid expressions are be handled.
+
+-------------------------------------------------------------------------------------------------
+
+2 REST endpoints:
 GET "/"           - Prints the message "Welcome to calculator application"
 POST "/calculate" - Accepts an input expression as string and computes and returns the result
 
