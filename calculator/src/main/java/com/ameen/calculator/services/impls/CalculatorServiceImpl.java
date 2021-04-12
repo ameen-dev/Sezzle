@@ -23,7 +23,7 @@ public class CalculatorServiceImpl implements CalculatorService{
     		
     		//Check if it allows only basic 4 operators
     		//^[\\d\\+*/-]+$ If we need not allow space too in the same condition
-    		if(!input.matches("^[\\d\\+*/-]*$")) {
+    		if(!input.matches("^[\\d\\.\\+*/-]*$")) {
     			throw new InvalidCharacterException("Invalid characters present, please check the input.");
     		}
     		
@@ -31,11 +31,12 @@ public class CalculatorServiceImpl implements CalculatorService{
             Stack<Operators> operatorStack = new Stack<Operators>();
             for(int i = 0; i < input.length(); i++){
                 try{
-                    int number = parseNumber(input, i);
-                    numberStack.push((double)number);
+                    double[] number = parseNumber(input, i);
+                    numberStack.push(number[0]);
 
-                    i += Integer.toString(number).length();
-                    if(i >= input.length()){
+                    i=(int) number[1];
+                    //i += Double.toString(number).length();
+                    if(number[1] >= input.length()){
                         break;
                     }
 
@@ -97,14 +98,18 @@ public class CalculatorServiceImpl implements CalculatorService{
         }
         return 0;
     }
-
-    private int parseNumber(String sequence, int offset){
+    
+    private double[] parseNumber(String sequence, int offset){
         StringBuilder sb = new StringBuilder();
-        while(offset < sequence.length() && Character.isDigit(sequence.charAt(offset))){
+        while(offset < sequence.length() && (Character.isDigit(sequence.charAt(offset)) || sequence.charAt(offset)=='.')){
             sb.append(sequence.charAt(offset));
             offset++;
         }
-        return Integer.parseInt(sb.toString());
+        double number = Double.parseDouble(sb.toString());
+        double double_array[] = new double[2];
+        double_array[0] = number;
+        double_array[1] = offset;
+        return double_array;
     }
 
     private Operators parseOperator(String sequence, int offset){
